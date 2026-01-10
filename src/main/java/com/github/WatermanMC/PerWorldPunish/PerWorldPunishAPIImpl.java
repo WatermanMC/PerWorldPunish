@@ -16,7 +16,6 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
     public boolean banPlayer(UUID playerId, String worldName, String reason) {
         if (Bukkit.getWorld(worldName) == null) return false;
 
-        // 1. Call the event through the main class and check if cancelled
         PlayerWorldBanEvent event = plugin.callBanEvent(playerId, worldName, reason);
         if (event.isCancelled()) return false;
 
@@ -34,7 +33,6 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
     public boolean tempBanPlayer(UUID playerId, String worldName, long minutes, String reason) {
         if (Bukkit.getWorld(worldName) == null || minutes <= 0) return false;
 
-        // 1. Call the event through the main class
         PlayerWorldTempBanEvent event = plugin.callTempBanEvent(playerId, worldName, minutes, reason);
         if (event.isCancelled()) return false;
 
@@ -53,7 +51,6 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
     public boolean unbanPlayer(UUID playerId, String worldName) {
         if (!plugin.isBanned(playerId, worldName)) return false;
 
-        // 1. Call the event through the main class
         plugin.callUnbanEvent(playerId, worldName);
 
         plugin.removeBan(playerId, worldName);
@@ -65,7 +62,6 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
         Player player = Bukkit.getPlayer(playerId);
         if (player == null || !player.getWorld().getName().equalsIgnoreCase(worldName)) return false;
 
-        // 1. Call the event through the main class
         PlayerWorldKickEvent event = plugin.callKickEvent(playerId, worldName, reason);
         if (event.isCancelled()) return false;
 
