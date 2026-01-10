@@ -6,7 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.papermc.paper.plugin.configuration.PluginMeta;
 import java.util.*;
 import com.github.WatermanMC.PerWorldPunish.api.PerWorldPunishAPI;
-import com.github.WatermanMC.PerWorldPunish.api.PerWorldPunishAPIImpl;
 import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldBanEvent;
 import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldTempBanEvent;
 import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldUnbanEvent;
@@ -27,15 +26,15 @@ public class PerWorldPunish extends JavaPlugin {
         getLogger().info("Loading PerWorldPunish v" + meta.getVersion() + " data...");
         instance = this;
         this.api = new PerWorldPunishAPIImpl(this);
+        this.configManager = new ConfigManager();
+        this.dataManager = new DataManager();
+        this.bans = new HashMap<>();
         getServer().getServicesManager().register(
                 PerWorldPunishAPI.class,
                 this.api,
                 this,
                 org.bukkit.plugin.ServicePriority.Normal
         );
-        this.configManager = new ConfigManager();
-        this.dataManager = new DataManager();
-        this.bans = new HashMap<>();
         loadData();
         registerCommands();
         registerEvents();
@@ -63,6 +62,10 @@ public class PerWorldPunish extends JavaPlugin {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new BanListener(this), this);
+    }
+
+    public static PerWorldPunishAPI getApi() {
+        return instance.api;
     }
 
     private void loadData() {
