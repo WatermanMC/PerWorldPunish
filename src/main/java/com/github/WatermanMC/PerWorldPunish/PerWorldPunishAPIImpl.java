@@ -15,36 +15,46 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
     @Override
     public boolean banPlayer(UUID playerId, String worldName, String reason) {
         if (Bukkit.getWorld(worldName) == null) return false;
-        PlayerWorldBanEvent event = new PlayerWorldBanEvent(playerId, worldName, reason);
-        Bukkit.getPluginManager().callEvent(event);
+
+        // 1. Call the event through the main class and check if cancelled
+        PlayerWorldBanEvent event = plugin.callBanEvent(playerId, worldName, reason);
         if (event.isCancelled()) return false;
+
         Player player = Bukkit.getPlayer(playerId);
         if (player != null && player.hasPermission("perworldpunish.admin")) return false;
+
         String finalReason = (reason == null || reason.isEmpty()) ? plugin.getConfigManager().getDefaultReason() : reason;
         plugin.addBan(playerId, new WorldBan(worldName, finalReason));
+
         handleTeleport(player, worldName);
         return true;
     }
 
     @Override
     public boolean tempBanPlayer(UUID playerId, String worldName, long minutes, String reason) {
-        if (Bukkit.getWorld(worldName) == null) return false;
-        PlayerWorldBanEvent event = plugin.callBanEvent(playerId, worldName, reason);
+        if (Bukkit.getWorld(worldName) == null || minutes <= 0) return false;
+
+        // 1. Call the event through the main class
+        PlayerWorldTempBanEvent event = plugin.callTempBanEvent(playerId, worldName, minutes, reason);
         if (event.isCancelled()) return false;
+
         Player player = Bukkit.getPlayer(playerId);
         if (player != null && player.hasPermission("perworldpunish.admin")) return false;
+
         String finalReason = (reason == null || reason.isEmpty()) ? plugin.getConfigManager().getDefaultReason() : reason;
         long expiryTime = System.currentTimeMillis() + (minutes * 60 * 1000L);
         plugin.addBan(playerId, new WorldBan(worldName, finalReason, expiryTime, true));
+
         handleTeleport(player, worldName);
         return true;
     }
 
     @Override
     public boolean unbanPlayer(UUID playerId, String worldName) {
-        if (Bukkit.getWorld(worldName) == null || !plugin.isBanned(playerId, worldName)) return false;
-        PlayerWorldUnbanEvent event = new PlayerWorldUnbanEvent(playerId, worldName);
-        Bukkit.getPluginManager().callEvent(event);
+        if (!plugin.isBanned(playerId, worldName)) return false;
+
+        // 1. Call the event through the main class
+        plugin.callUnbanEvent(playerId, worldName);
 
         plugin.removeBan(playerId, worldName);
         return true;
@@ -54,10 +64,13 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
     public boolean kickPlayer(UUID playerId, String worldName, String reason) {
         Player player = Bukkit.getPlayer(playerId);
         if (player == null || !player.getWorld().getName().equalsIgnoreCase(worldName)) return false;
-        PlayerWorldKickEvent event = new PlayerWorldKickEvent(playerId, worldName, reason);
-        Bukkit.getPluginManager().callEvent(event);
+
+        // 1. Call the event through the main class
+        PlayerWorldKickEvent event = plugin.callKickEvent(playerId, worldName, reason);
         if (event.isCancelled()) return false;
+
         if (player.hasPermission("perworldpunish.admin")) return false;
+
         handleTeleport(player, worldName);
         return true;
     }
