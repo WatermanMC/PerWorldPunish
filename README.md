@@ -1,6 +1,6 @@
 # PerWorldPunish
 
-**PerWorldPunish** is a simple but powerful per-world punishment plugin designed for **PaperMC 1.21+** servers. It provides server admins with the fundamental ability to ban players per-world quick and easy without the unneccessary clutter or overhead of larger plugins.
+**PerWorldPunish** is a simple but powerful per-world punishment plugin designed for **PaperMC 1.21+** servers. It provides server admins with the fundamental ability to ban players per-world quick and easy without the unnecessary clutter or overhead of larger plugins.
 
 ---
 
@@ -30,11 +30,11 @@
 ---
 
 ## Developer API
-Integrate PerWorldPunish in your own plugins!
+Integrate PerWorldPunish in your own plugins! Currently
 
 **1. Add the dependency**
 
-**MAVEN:**
+**MAVEN `pom.xml`:**
 ```xml
 	<repositories>
 		<repository>
@@ -44,15 +44,15 @@ Integrate PerWorldPunish in your own plugins!
 	</repositories>
 
 	<dependency>
-	    <groupId>com.github.WatermanMC</groupId>
-	    <artifactId>PerWorldPunish</artifactId>
-	    <version>1.0.0</version>
-      <classifier>api</classifier>
-      <scope>provided</scope>
+           <groupId>com.github.WatermanMC</groupId>
+           <artifactId>PerWorldPunish</artifactId>
+           <version>1.0.0</version>
+           <classifier>api</classifier>
+           <scope>provided</scope>
 	</dependency>
 ```
 
-**GRADLE GROOVY:**
+**GRADLE `build.gradle`:**
 ```groovy
 repositories {
     maven {
@@ -65,7 +65,7 @@ dependencies {
 }
 ```
 
-**GRADLE KOTLIN:**
+**GRADLE `build.gradle.kts:**
 ```kotlin
 repositories {
     maven("https://jitpack.io")
