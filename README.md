@@ -6,7 +6,7 @@
 
 ## Links
 * [Source Code](https://github.com/WatermanMC/PerWorldPunish)
-* [Discord Support]()
+* [Discord Support](https://discord.gg/Scgqfm5EU4)
 
 
 ## Key Features & Why You Should Download It
@@ -158,7 +158,7 @@ dependencies {
 ```
 
 ### Using the API
-The whole API code can be seen [here]().
+The whole API code can be seen [here](https://github.com/WatermanMC/PerWorldPunish/tree/main/src/main/java/com/github/WatermanMC/PerWorldPunish/api).
 
 **Accessing the API**
 Access the API through Services Manager.
@@ -180,8 +180,8 @@ PerWorldPunishAPI api = PerWorldPunish.getApi();
 Once you have the api, you can use these methods:
 
 * Ban: `api.banPlayer(uuid, worldName, reason);`
-* Temporary ban: `api.tempBan(uuid, worldName, minutes, reason);`
-* Kick: `api.kick(uuid, worldName, reason);`
+* Temporary ban: `api.tempBanPlayer(uuid, worldName, minutes, reason);`
+* Kick: `api.kickPlayer(uuid, worldName, reason);`
 * Check: `api.isBanned(uuid, worldName);`
 * Unban: `api.unbanPlayer(uuid, worldName);`
 
