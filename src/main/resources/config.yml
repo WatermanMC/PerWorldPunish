@@ -2,7 +2,7 @@
 # Support: https://discord.gg/Scgqfm5EU4
 # GitHub Source Code: https://github.com/WatermanMC/PerWorldPunish
 
-# This will show id there is no reason provided for ban/kick/tempban
+# This will show if there is no reason provided for ban/kick/tempban
 default-reason: "<red>No reason provided."
 
 # The player will get teleported in this world after getting banned/kicked
