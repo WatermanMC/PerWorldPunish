@@ -82,7 +82,9 @@ playerKicked: "<gray>You got kicked from <yellow>{world}<gray>. Reason: <reset>{
 playerNotInWorld: "<gray>That player is not in <yellow>{world}<gray>."
 ```
 </details>
+
 ---
+
 ## Developer API
 Integrate PerWorldPunish in your own projects!
 
