@@ -73,8 +73,8 @@ public class DataManager {
         return bans;
     }
 
-    public void saveBans(Map<UUID, Set<WorldBan>> bans, boolean sync) {
-        if (!isDirty && !sync) return;
+    public boolean saveBans(Map<UUID, Set<WorldBan>> bans, boolean sync) {
+        if (!isDirty && !sync) return true;
         String discordSupport = "https://discord.gg/Scgqfm5EU4";
 
         YamlConfiguration newData = new YamlConfiguration();
@@ -91,9 +91,11 @@ public class DataManager {
         if (sync) {
             try {
                 newData.save(dataFile);
+                return true;
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "Manual save failed", e);
                 plugin.getLogger().warning("Cant fix it? Join on our fast discord support: " + discordSupport);
+                return false;
             }
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -105,6 +107,7 @@ public class DataManager {
                     plugin.getLogger().warning("Cant fix it? Join on our fast discord support: " + discordSupport);
                 }
             });
+            return true;
         }
     }
 }

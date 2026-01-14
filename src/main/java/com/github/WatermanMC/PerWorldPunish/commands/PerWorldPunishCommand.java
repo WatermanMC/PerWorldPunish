@@ -48,6 +48,17 @@ public class PerWorldPunishCommand implements CommandExecutor {
                 sender.sendMessage(miniMessage.deserialize("<green>Commands<gray>: <white>/perworldpunish /worldban /worldtempban /worldunban /worldkick /worldbanlist"));
                 return true;
 
+            case "forcesavedata":
+                sender.sendMessage(miniMessage.deserialize("<gray>Attempting to force save ban data to disk..."));
+                boolean saved = plugin.getDataManager().saveBans(plugin.getBans(), true);
+
+                if (saved) {
+                    sender.sendMessage(miniMessage.deserialize("<green>Successfully saved all ban data!"));
+                } else {
+                    sender.sendMessage(miniMessage.deserialize("Failed to save data. Check console for the stacktrace."));
+                }
+                return true;
+
             default:
                 sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
                 return true;

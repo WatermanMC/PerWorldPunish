@@ -8,7 +8,7 @@ authors: [ WatermanMC ]
 commands:
   perworldpunish:
     description: PerWorldPunish admin command
-    usage: /perworldpunish <info|reload>
+    usage: /perworldpunish <info|reload|forcesavedata>
     permission: perworldpunish.admin
   worldban:
     description: Ban a player in a world
