@@ -23,14 +23,14 @@
 ## Commands & Usage
 **(<> is optional, [] is required):**
 
-| Command | Description | Permission |
-| :--- | :--- | :--- |
-| `/worldban <player> <world> [reason]` | Ban a player in a world. | `perworldpunish.worldban` |
+| Command                                                   | Description | Permission |
+|:----------------------------------------------------------| :--- | :--- |
+| `/worldban <player> <world> [reason]`                     | Ban a player in a world. | `perworldpunish.worldban` |
 | `/worldtempban <player> <world> <timeInMinutes> [reason]` | Temporarily ban a player in a world. | `perworldpunish.worldtempban` |
-| `/worldkick <player> <world> [reason]` | Kick a player in a world. | `perworldpunish.worldkick` |
-| `/worldbanlist` | Ban list of players. | `perworldpunish.worldbanlist` |
-| `/worldunban <player>` | Unban a player in a world. | `perworldpunish.worldunban` |
-| `/perworldpunish <info/reload>` | PerWorldPunish admin command | `perworldpunish.admin` |
+| `/worldkick <player> <world> [reason]`                    | Kick a player in a world. | `perworldpunish.worldkick` |
+| `/worldbanlist`                                           | Ban list of players. | `perworldpunish.worldbanlist` |
+| `/worldunban <player>`                                    | Unban a player in a world. | `perworldpunish.worldunban` |
+| `/perworldpunish <info/reload/forcesavedata>`             | PerWorldPunish admin command | `perworldpunish.admin` |
 
 ---
 ## Default Config Files
