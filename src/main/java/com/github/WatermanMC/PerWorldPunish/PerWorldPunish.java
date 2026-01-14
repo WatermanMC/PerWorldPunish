@@ -96,6 +96,8 @@ public class PerWorldPunish extends JavaPlugin {
 
     public void addBan(UUID playerId, WorldBan ban) {
         bans.computeIfAbsent(playerId, k -> new HashSet<>()).add(ban);
+        dataManager.markDirty();
+        dataManager.saveBans(bans, false);
     }
 
     public void removeBan(UUID playerId, String worldName) {
@@ -104,6 +106,8 @@ public class PerWorldPunish extends JavaPlugin {
             if (bans.get(playerId).isEmpty()) {
                 bans.remove(playerId);
             }
+            dataManager.markDirty();
+            dataManager.saveBans(bans, false);
         }
     }
 
