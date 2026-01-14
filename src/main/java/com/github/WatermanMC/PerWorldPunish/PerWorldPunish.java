@@ -73,7 +73,9 @@ public class PerWorldPunish extends JavaPlugin {
     }
 
     private void saveData() {
-        dataManager.saveBans(bans);
+        if (dataManager != null && bans != null) {
+            dataManager.saveBans(bans, true);
+        }
     }
 
     public static PerWorldPunish getInstance() {
