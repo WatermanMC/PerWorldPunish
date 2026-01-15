@@ -1,5 +1,5 @@
 # All messages used in plugin
-# Only supports MiniMesages
+# Only supports MiniMessage
 # MiniMessage formatter: https://webui.advntr.dev/
 
 nopermission: "<red>You don't have permission to do that!"

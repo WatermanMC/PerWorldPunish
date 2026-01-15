@@ -15,7 +15,7 @@ public class DataManager {
 
     public DataManager() {
         this.plugin = PerWorldPunish.getInstance();
-        this.dataFile = new File(plugin.getDataFolder(), "bans.yml");
+        this.dataFile = new File(plugin.getDataFolder(), "data.yml");
         createFile();
     }
 
@@ -27,7 +27,7 @@ public class DataManager {
             try {
                 dataFile.createNewFile();
             } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE, "Could not create bans.yml", e);
+                plugin.getLogger().log(Level.SEVERE, "Could not create data.yml", e);
             }
         }
     }
