@@ -25,7 +25,7 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
         String finalReason = (reason == null || reason.isEmpty()) ? plugin.getConfigManager().getDefaultReason() : reason;
         plugin.addBan(playerId, new WorldBan(worldName, finalReason));
 
-        handleTeleport(player, worldName);
+        this.handleTeleport(player, worldName);
         return true;
     }
 
@@ -43,7 +43,7 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
         long expiryTime = System.currentTimeMillis() + (minutes * 60 * 1000L);
         plugin.addBan(playerId, new WorldBan(worldName, finalReason, expiryTime, true));
 
-        handleTeleport(player, worldName);
+        this.handleTeleport(player, worldName);
         return true;
     }
 
@@ -67,7 +67,7 @@ public class PerWorldPunishAPIImpl implements PerWorldPunishAPI {
 
         if (player.hasPermission("perworldpunish.admin")) return false;
 
-        handleTeleport(player, worldName);
+        this.handleTeleport(player, worldName);
         return true;
     }
 

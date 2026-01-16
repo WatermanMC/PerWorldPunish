@@ -24,12 +24,10 @@ public class WorldBanCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldban")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
-            return true;
         }
 
         if (args.length < 2) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /worldban <player> <world> [reason]"));
-            return true;
         }
 
         String playerName = args[0];
@@ -52,7 +50,6 @@ public class WorldBanCommand implements CommandExecutor {
             if (target.hasPermission("perworldpunish.admin")) {
                 sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
                         .replace("{player}", playerName)));
-                return true;
             }
             playerId = target.getUniqueId();
         } else {
@@ -62,14 +59,10 @@ public class WorldBanCommand implements CommandExecutor {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
-            return true;
         }
 
         com.github.WatermanMC.PerWorldPunish.api.PlayerWorldBanEvent event =
                 plugin.callBanEvent(playerId, worldName, reason);
-        if (event.isCancelled()) {
-            return true;
-        }
 
         plugin.addBan(playerId, new WorldBan(worldName, reason));
 
@@ -85,7 +78,6 @@ public class WorldBanCommand implements CommandExecutor {
                     .replace("{reason}", reason);
             target.sendMessage(miniMessage.deserialize(msg));
         }
-
         return true;
     }
 }

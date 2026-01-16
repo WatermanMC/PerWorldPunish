@@ -16,7 +16,7 @@ public class DataManager {
     public DataManager() {
         this.plugin = PerWorldPunish.getInstance();
         this.dataFile = new File(plugin.getDataFolder(), "data.yml");
-        createFile();
+        this.createFile();
     }
 
     private void createFile() {
@@ -58,7 +58,7 @@ public class DataManager {
                         boolean isTemp = data.getBoolean(path + ".isTemporary", false);
 
                         if (isTemp && expiryTime > 0 && expiryTime < System.currentTimeMillis()) {
-                            markDirty();
+                            this.markDirty();
                             continue;
                         }
 

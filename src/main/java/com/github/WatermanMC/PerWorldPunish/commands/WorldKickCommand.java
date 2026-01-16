@@ -23,12 +23,10 @@ public class WorldKickCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldkick")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
-            return true;
         }
 
         if (args.length < 2) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /worldkick <player> <world> [reason]"));
-            return true;
         }
 
         String playerName = args[0];
@@ -37,19 +35,16 @@ public class WorldKickCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidPlayer")));
-            return true;
         }
 
         if (target.hasPermission("perworldpunish.admin")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
                     .replace("{player}", playerName)));
-            return true;
         }
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
-            return true;
         }
 
         StringBuilder reasonBuilder = new StringBuilder();
@@ -65,9 +60,6 @@ public class WorldKickCommand implements CommandExecutor {
         if (target.getWorld().getName().equalsIgnoreCase(worldName)) {
             com.github.WatermanMC.PerWorldPunish.api.PlayerWorldKickEvent event =
                     plugin.callKickEvent(target.getUniqueId(), worldName, reason);
-            if (event.isCancelled()) {
-                return true;
-            }
 
             target.teleport(Bukkit.getWorld(plugin.getConfigManager().getFallbackWorld()).getSpawnLocation());
 

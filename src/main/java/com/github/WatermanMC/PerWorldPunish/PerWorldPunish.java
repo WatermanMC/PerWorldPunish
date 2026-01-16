@@ -4,12 +4,7 @@ import com.github.WatermanMC.PerWorldPunish.managers.*;
 import com.github.WatermanMC.PerWorldPunish.commands.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import io.papermc.paper.plugin.configuration.PluginMeta;
-import java.util.*;
-import com.github.WatermanMC.PerWorldPunish.api.PerWorldPunishAPI;
-import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldBanEvent;
-import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldTempBanEvent;
-import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldUnbanEvent;
-import com.github.WatermanMC.PerWorldPunish.api.PlayerWorldKickEvent;
+import com.github.WatermanMC.PerWorldPunish.api.*;
 import org.bukkit.Bukkit;
 import java.util.*;
 
@@ -22,33 +17,33 @@ public class PerWorldPunish extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        PluginMeta meta = getPluginMeta();
-        getLogger().info("Loading PerWorldPunish v" + meta.getVersion() + " data...");
+        PluginMeta meta = this.getPluginMeta();
+        this.getLogger().info("Loading PerWorldPunish v" + meta.getVersion() + " data...");
         instance = this;
         this.api = new PerWorldPunishAPIImpl(this);
         this.configManager = new ConfigManager();
         this.dataManager = new DataManager();
         this.bans = new HashMap<>();
-        getServer().getServicesManager().register(
+        this.getServer().getServicesManager().register(
                 PerWorldPunishAPI.class,
                 this.api,
                 this,
                 org.bukkit.plugin.ServicePriority.Normal
         );
-        loadData();
-        registerCommands();
-        registerEvents();
-        getLogger().info("Data loaded successfully!");
-        getLogger().info("Enabled PerWorldPunish v" + meta.getVersion());
+        this.loadData();
+        this.registerCommands();
+        this.registerEvents();
+        this.getLogger().info("Data loaded successfully!");
+        this.getLogger().info("Enabled PerWorldPunish v" + meta.getVersion());
     }
 
     @Override
     public void onDisable() {
-        PluginMeta meta = getPluginMeta();
-        getLogger().info("Saving bans data...");
-        saveData();
-        getLogger().info("Saved bans data successfully!");
-        getLogger().info("Disabled PerWorldPunish v" + meta.getVersion());
+        PluginMeta meta = this.getPluginMeta();
+        this.getLogger().info("Saving bans data...");
+        this.saveData();
+        this.getLogger().info("Saved bans data successfully!");
+        this.getLogger().info("Disabled PerWorldPunish v" + meta.getVersion());
     }
 
     private void registerCommands() {
@@ -61,7 +56,7 @@ public class PerWorldPunish extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new BanListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new BanListener(this), this);
     }
 
     public static PerWorldPunishAPI getApi() {
@@ -118,7 +113,7 @@ public class PerWorldPunish extends JavaPlugin {
             if (ban.getWorld().equalsIgnoreCase(worldName)) {
                 if (ban.isTemporary()) {
                     if (System.currentTimeMillis() > ban.getExpiryTime()) {
-                        removeBan(playerId, worldName);
+                        this.removeBan(playerId, worldName);
                         return false;
                     }
                     return true;

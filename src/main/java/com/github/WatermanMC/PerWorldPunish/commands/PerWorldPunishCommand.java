@@ -21,34 +21,30 @@ public class PerWorldPunishCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
-            return true;
         }
 
         if (!sender.hasPermission("perworldpunish.admin")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
-            return true;
         }
 
         switch (args[0].toLowerCase()) {
-            case "reload":
+            case "reload" -> {
                 boolean success = plugin.getConfigManager().reloadConfigs();
 
                 if (success) {
                     sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("pluginReloaded")));
                 } else {
-                    sender.sendMessage(miniMessage.deserialize("<red>IMPORTANT WARNING: Plugin reload failed, check your console for errors!"));
+                    sender.sendMessage(miniMessage.deserialize("<red>Plugin reload failed, check your console for errors!"));
                 }
-                return true;
-
-            case "info":
+            }
+            case "info" -> {
                 PluginMeta meta = plugin.getPluginMeta();
                 sender.sendMessage(miniMessage.deserialize("<aqua><bold>PerWorldPunish <reset><white>v" + meta.getVersion()));
                 sender.sendMessage(miniMessage.deserialize("<gray>Allows per-world punishments such as ban, kick and tempban!"));
                 sender.sendMessage(miniMessage.deserialize("<gold>Authors<gray>: <reset>" + meta.getAuthors()));
                 sender.sendMessage(miniMessage.deserialize("<green>Commands<gray>: <white>/perworldpunish /worldban /worldtempban /worldunban /worldkick /worldbanlist"));
-                return true;
-
-            case "forcesavedata":
+            }
+            case "forcesavedata" -> {
                 sender.sendMessage(miniMessage.deserialize("<gray>Attempting to force save ban data to disk..."));
                 boolean saved = plugin.getDataManager().saveBans(plugin.getBans(), true);
 
@@ -57,11 +53,9 @@ public class PerWorldPunishCommand implements CommandExecutor {
                 } else {
                     sender.sendMessage(miniMessage.deserialize("Failed to save data. Check console for the stacktrace."));
                 }
-                return true;
-
-            default:
-                sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
-                return true;
+            }
+            default -> sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
         }
+        return true;
     }
 }

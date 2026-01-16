@@ -24,12 +24,10 @@ public class WorldTempBanCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldtempban")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
-            return true;
         }
 
         if (args.length < 3) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /worldtempban <player> <world> <timeInMinutes> [reason]"));
-            return true;
         }
 
         String playerName = args[0];
@@ -39,7 +37,6 @@ public class WorldTempBanCommand implements CommandExecutor {
             int minutes = Integer.parseInt(args[2]);
             if (minutes <= 0) {
                 sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("timeNotPositive")));
-                return true;
             }
 
             StringBuilder reasonBuilder = new StringBuilder();
@@ -59,7 +56,6 @@ public class WorldTempBanCommand implements CommandExecutor {
                 if (target.hasPermission("perworldpunish.admin")) {
                     sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
                             .replace("{player}", playerName)));
-                    return true;
                 }
                 playerId = target.getUniqueId();
             } else {
@@ -69,14 +65,10 @@ public class WorldTempBanCommand implements CommandExecutor {
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
                 sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
-                return true;
             }
 
             com.github.WatermanMC.PerWorldPunish.api.PlayerWorldTempBanEvent event =
                     plugin.callTempBanEvent(playerId, worldName, minutes, reason);
-            if (event.isCancelled()) {
-                return true;
-            }
 
             long expiryTime = System.currentTimeMillis() + (minutes * 60 * 1000L);
             plugin.addBan(playerId, new WorldBan(worldName, reason, expiryTime, true));
@@ -98,7 +90,6 @@ public class WorldTempBanCommand implements CommandExecutor {
 
         } catch (NumberFormatException e) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidTimeFormat")));
-            return true;
         }
 
         return true;

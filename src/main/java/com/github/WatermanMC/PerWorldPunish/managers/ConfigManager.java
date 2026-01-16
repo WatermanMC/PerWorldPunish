@@ -19,8 +19,8 @@ public class ConfigManager {
 
     public ConfigManager() {
         this.plugin = PerWorldPunish.getInstance();
-        createFiles();
-        reloadConfigs();
+        this.createFiles();
+        this.reloadConfigs();
     }
 
     private void createFiles() {
@@ -63,7 +63,7 @@ public class ConfigManager {
             return true;
 
         } catch (InvalidConfigurationException e) {
-            String location = extractLocation(e.getMessage());
+            String location = this.extractLocation(e.getMessage());
             plugin.getLogger().warning("Possible fix: The error is " + location + " on file " + currentFile);
             plugin.getLogger().warning("Cant fix it? Join on our fast discord support: " + discordSupport);
             return false;

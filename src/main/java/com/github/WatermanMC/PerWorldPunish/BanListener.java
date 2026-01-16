@@ -31,7 +31,7 @@ public class BanListener implements Listener {
         Player player = event.getPlayer();
         String worldName = player.getWorld().getName();
 
-        checkAndHandleBan(player, worldName);
+        this.checkAndHandleBan(player, worldName);
     }
 
     @EventHandler
@@ -39,13 +39,13 @@ public class BanListener implements Listener {
         Player player = event.getPlayer();
         String worldName = player.getWorld().getName();
 
-        checkAndHandleBan(player, worldName);
+        this.checkAndHandleBan(player, worldName);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onTeleport(PlayerTeleportEvent event, Player player, String worldName) {
         if (plugin.isBanned(event.getPlayer().getUniqueId(), event.getTo().getWorld().getName())) {
-            WorldBan ban = getBanForWorld(player.getUniqueId(), worldName);
+            WorldBan ban = this.getBanForWorld(player.getUniqueId(), worldName);
             event.setCancelled(true);
             event.getPlayer().sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerBanned")
                     .replace("{world}", ban.getWorld())
@@ -66,7 +66,7 @@ public class BanListener implements Listener {
             Location spawn = fallback.getSpawnLocation();
             player.teleport(spawn);
 
-            WorldBan ban = getBanForWorld(player.getUniqueId(), worldName);
+            WorldBan ban = this.getBanForWorld(player.getUniqueId(), worldName);
             if (ban != null) {
                 String reason = ban.getReason();
                 if (reason.isEmpty()) {
