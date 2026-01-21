@@ -1,0 +1,12 @@
+# PerWorldPunish - Allows per-world punishments such as ban, kick and tempban!
+# Support: https://discord.gg/Scgqfm5EU4
+# GitHub Source Code: https://github.com/WatermanMC/PerWorldPunish
+
+# This will show if there is no reason provided for ban/kick/tempban
+# Only supports MiniMessage!
+# MiniMessage formatter: https://webui.advntr.dev/
+default-reason: "<red>No reason provided."
+
+# The player will get teleported in this world after getting banned/kicked
+# If not set or world is invalid, the plugin will choose your main world, where your datapacks etc. is stored
+fallback-world: 'world'

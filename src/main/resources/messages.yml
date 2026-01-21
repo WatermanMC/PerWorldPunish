@@ -1,0 +1,25 @@
+# All messages used in plugin
+# Only supports MiniMessage!
+# MiniMessage formatter: https://webui.advntr.dev/
+
+nopermission: "<red>You don't have permission to do that!"
+pluginReloaded: "<green>Plugin reloaded!"
+playerPunishImmune: "<red>You can't punish <reset>{player}"
+pluginReloadFail: "<red>Plugin reload failed. Check console for errors."
+invalidPlayer: "<red>Player not found."
+invalidWorld: "<red>World not found."
+invalidTimeFormat: "<red>Invalid time format."
+timeNotPositive: "<red>Time must be positive."
+playerNotBanned: "<red>That player is not banned in <gray>{world}<red>."
+banListPrefix: "<gray>Banned players:"
+banListFormat: "<reset>{player} <gray>is banned on <yellow>{world}"
+banListFormat-tempban: "<reset>{player} <gray>is banned on <yellow>{world} <gray>for <gray>{time} <gray>minutes"
+noBannedPlayers: "<gray>There's no banned players."
+banSuccess: "<green>Successfully banned <reset>{player} <green>on <yellow>{world}<gray>. Reason <reset>: {reason}"
+tempBanSuccess: "<green>Successfully banned <reset>{player} <green>on <yellow>{world} <green>for <yellow>{time} <green>minutes<gray>. Reason <reset>: {reason}"
+kickSuccess: "<green>Successfully kicked <reset>{player} <green>from <yellow>{world}<gray>. Reason <reset>: {reason}"
+unBanSuccess: "<green>Successfully unbanned <reset>{player} <green>from <yellow>{world}"
+playerBanned: "<red>You are banned on <yellow>{world}<red>! <gray>Reason: <reset>{reason}"
+playerTempBanned: "<red>You are temporarily banned on <yellow>{world}<red> for <yellow>{time} <red>minutes! <gray>Reason: <reset>{reason}"
+playerKicked: "<gray>You got kicked from <yellow>{world}<gray>. Reason: <reset>{reason}"
+playerNotInWorld: "<gray>That player is not in <yellow>{world}<gray>."

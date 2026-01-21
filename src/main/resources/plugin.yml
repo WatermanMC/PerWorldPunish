@@ -1,0 +1,52 @@
+name: PerWorldPunish
+description: Allows per-world punishments such as ban, kick and tempban!
+version: "1.0.0"
+main: com.github.WatermanMC.PerWorldPunish.PerWorldPunish
+api-version: "1.21"
+authors: [ WatermanMC ]
+
+commands:
+  perworldpunish:
+    description: PerWorldPunish admin command
+    usage: /perworldpunish <info|reload>
+    permission: perworldpunish.admin
+  worldban:
+    description: Ban a player in a world
+    usage: /worldban <player> <world> [reason]
+    permission: perworldpunish.worldban
+  worldunban:
+    description: Unban player in a world
+    usage: /worldunban <player> <world>
+    permission: perworldpunish.worldunban
+  worldbanlist:
+    description: Ban list of players
+    usage: /worldbanlist
+    permission: perworldpunish.worldbanlist
+  worldkick:
+    description: Kick a player in a world
+    usage: /worldkick <player> <world> [reason]
+    permission: perworldpunish.worldkick
+  worldtempban:
+    description: Temporarily ban a player in a world
+    usage: /worldtempban <player> <world> <timeInMinutes> [reason]
+    permission: perworldpunish.worldtempban
+
+permissions:
+  perworldpunish.admin:
+    description: PerWorldPunish admin permission
+    default: op
+  perworldpunish.worldban:
+    description: Ban a player in a world
+    default: op
+  perworldpunish.worldunban:
+    description: Unban player in a world
+    default: op
+  perworldpunish.worldbanlist:
+    description: Ban list of players
+    default: op
+  perworldpunish.worldkick:
+    description: Kick a player in a world
+    default: op
+  perworldpunish.worldtempban:
+    description: Temporarily ban a player in a world
+    default: op
