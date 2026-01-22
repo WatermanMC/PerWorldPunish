@@ -16,7 +16,7 @@
 ---
 
 ## Commands & Usage
-**(<> is optional, [] is required):**
+**(<> is required, [] is optional):**
 *NOTE: It shows command usage if you typed the command without any arguments.*
 
 | Command                                           | Description                          | Permission                    |
