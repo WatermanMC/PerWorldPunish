@@ -85,17 +85,6 @@ public class ConfigManager {
         return "a syntax error";
     }
 
-    private String extractYamlError(String fullError) {
-        if (fullError.contains("line") && fullError.contains("column")) {
-            int start = fullError.indexOf("line");
-            int end = fullError.indexOf(",", start);
-            if (end == -1) end = fullError.length();
-
-            return "in " + fullError.substring(start, fullError.indexOf("\n", start)).trim();
-        }
-        return "related to syntax";
-    }
-
     public String getDefaultReason() {
         return config.getString("default-reason", "<red>No reason provided.");
     }

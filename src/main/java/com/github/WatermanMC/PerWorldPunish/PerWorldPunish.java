@@ -61,9 +61,6 @@ public class PerWorldPunish extends JavaPlugin {
         return configManager;
     }
 
-    public DataManager getDataManager() {
-        return dataManager;
-    }
 
     public Map<UUID, Set<WorldBan>> getBans() {
         return bans;

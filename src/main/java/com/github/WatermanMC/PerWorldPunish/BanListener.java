@@ -46,22 +46,39 @@ public class BanListener implements Listener {
     public void onTeleport(PlayerTeleportEvent event, String worldName, Player player) {
         if (plugin.isBanned(event.getPlayer().getUniqueId(), event.getTo().getWorld().getName())) {
             WorldBan ban = getBanForWorld(player.getUniqueId(), worldName);
+            if (ban != null) {
+                String reason = ban.getReason();
+                if (reason.isEmpty()) {
+                    reason = plugin.getConfigManager().getDefaultReason();
+                }
+
+                Component message;
+                if (ban.isTemporary()) {
+                    long remainingMinutes = ban.getRemainingTime() / (60 * 1000);
+                    String msg = plugin.getConfigManager().getMessage("playerTempBanned")
+                            .replace("{world}", worldName)
+                            .replace("{reason}", reason)
+                            .replace("{time}", String.valueOf(remainingMinutes));
+                    message = miniMessage.deserialize(msg);
+                } else {
+                    String msg = plugin.getConfigManager().getMessage("playerBanned")
+                            .replace("{world}", worldName)
+                            .replace("{reason}", reason);
+                    message = miniMessage.deserialize(msg);
+                }
+                player.sendMessage(message);
+            }
             event.setCancelled(true);
-            event.getPlayer().sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerBanned")
-                    .replace("{world}", ban.getWorld())
-                    .replace("{reason}", ban.getReason())));
         }
     }
 
-
     private void checkAndHandleBan(Player player, String worldName) {
         if (plugin.isBanned(player.getUniqueId(), worldName)) {
-            ConfigManager config = plugin.getConfigManager();
-            String fallbackWorld = config.getFallbackWorld();
+            String fallbackWorld = plugin.getConfigManager().getFallbackWorld();
 
             World fallback = Bukkit.getWorld(fallbackWorld);
             if (fallback == null) {
-                fallback = Bukkit.getWorlds().get(0);
+                fallback = Bukkit.getWorlds().getFirst();
             }
 
             Location spawn = fallback.getSpawnLocation();
@@ -71,19 +88,19 @@ public class BanListener implements Listener {
             if (ban != null) {
                 String reason = ban.getReason();
                 if (reason.isEmpty()) {
-                    reason = config.getDefaultReason();
+                    reason = plugin.getConfigManager().getDefaultReason();
                 }
 
                 Component message;
                 if (ban.isTemporary()) {
                     long remainingMinutes = ban.getRemainingTime() / (60 * 1000);
-                    String msg = config.getMessage("playerTempBanned")
+                    String msg = plugin.getConfigManager().getMessage("playerTempBanned")
                             .replace("{world}", worldName)
                             .replace("{reason}", reason)
                             .replace("{time}", String.valueOf(remainingMinutes));
                     message = miniMessage.deserialize(msg);
                 } else {
-                    String msg = config.getMessage("playerBanned")
+                    String msg = plugin.getConfigManager().getMessage("playerBanned")
                             .replace("{world}", worldName)
                             .replace("{reason}", reason);
                     message = miniMessage.deserialize(msg);
