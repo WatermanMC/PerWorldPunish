@@ -9,6 +9,7 @@
 * **Essential Per-world Punishments:** Easily ban/kick/tempban your players per-world! Perfect for server admins who don't want to ban their players on whole server.
 * **Minimal Overhead:** Built to be lightweight and efficient, ensuring minimal impact on your server's performance. Perfect for small to medium-sized survival, semi-vanilla, or even large public servers that just need per-world punishments!
 * **Customize Plugin Messages:** Customize all PerWorldPunish messages completely on `messages.yml`! Uses MiniMessage so you can have gradients, hex, clickable text and more!
+* **Full MiniMessage Support:** Supports MiniMessage everywhere so you can use hex, gradients clickable texts etc.! It even works on commands like ban/tempban/kick reasons. No more ugly § color codes! MiniMessage formatter: [https://webui.advntr.dev/](https://webui.advntr.dev/)
 * **Intuitive Commands:** Everything the server admin needs is covered by small, easy to remember commands set.
 * **Modern Server Support:** Built specifically for the latest **PaperMC 1.21+** versions and its forks, guaranteeing up-to-date performance and stability.
 * **Open Source:** Developed under the **GNU General Public License v3.0**, allowing for transparency and community contributions.
@@ -16,8 +17,9 @@
 ---
 
 ## Commands & Usage
-**(<> is required, [] is optional):**
-*NOTE: It shows command usage if you typed the command without any arguments.*
+**(<> is required, [] is optional):**<br>
+*NOTE: It shows command usage if you typed the command without any arguments.*<br>
+[reason] argument supports MiniMessage! MiniMessage Formatter: [https://webui.advntr.dev/](https://webui.advntr.dev/)
 
 | Command                                           | Description                          | Permission                    |
 |:--------------------------------------------------|:-------------------------------------|:------------------------------|
