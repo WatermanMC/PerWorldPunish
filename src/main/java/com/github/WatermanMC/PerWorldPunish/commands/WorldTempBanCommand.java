@@ -24,10 +24,12 @@ public class WorldTempBanCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldtempban")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            return true;
         }
 
         if (args.length < 3) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /worldtempban <player> <world> <timeInMinutes> [reason]"));
+            return true;
         }
 
         String playerName = args[0];
@@ -84,6 +86,7 @@ public class WorldTempBanCommand implements CommandExecutor {
                         .replace("{time}", String.valueOf(minutes));
                 target.sendMessage(miniMessage.deserialize(msg));
             }
+            return true;
 
         } catch (NumberFormatException e) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidTimeFormat")));

@@ -23,10 +23,12 @@ public class WorldKickCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldkick")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            return true;
         }
 
         if (args.length < 2) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /worldkick <player> <world> [reason]"));
+            return true;
         }
 
         String playerName = args[0];
@@ -35,16 +37,19 @@ public class WorldKickCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidPlayer")));
-        }
+            return true;
+       }
 
         if (target.hasPermission("perworldpunish.admin")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
                     .replace("{player}", playerName)));
+            return true;
         }
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
+            return true;
         }
 
         StringBuilder reasonBuilder = new StringBuilder();
@@ -69,6 +74,7 @@ public class WorldKickCommand implements CommandExecutor {
                     .replace("{player}", playerName)
                     .replace("{world}", worldName)
                     .replace("{reason}", reason)));
+            return true;
         } else {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerNotInWorld")
                     .replace("{world}", worldName)));

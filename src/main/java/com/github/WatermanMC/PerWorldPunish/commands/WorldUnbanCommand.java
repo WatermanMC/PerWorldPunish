@@ -23,10 +23,12 @@ public class WorldUnbanCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldunban")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            return true;
         }
 
         if (args.length < 2) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /worldunban <player> <world>"));
+            return true;
         }
 
         String playerName = args[0];
@@ -35,6 +37,7 @@ public class WorldUnbanCommand implements CommandExecutor {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
+            return true;
         }
 
         UUID playerId = Bukkit.getOfflinePlayer(playerName).getUniqueId();
@@ -42,6 +45,7 @@ public class WorldUnbanCommand implements CommandExecutor {
         if (!plugin.isBanned(playerId, worldName)) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerNotBanned")
                     .replace("{world}", worldName)));
+            return true;
         }
 
         plugin.removeBan(playerId, worldName);

@@ -23,12 +23,14 @@ public class WorldBanListCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("perworldpunish.worldbanlist")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            return true;
         }
 
         Map<UUID, Set<WorldBan>> bans = plugin.getBans();
 
         if (bans.isEmpty()) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("noBannedPlayers")));
+            return true;
         }
 
         sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("banListPrefix")));
@@ -51,6 +53,7 @@ public class WorldBanListCommand implements CommandExecutor {
                             .replace("{world}", ban.getWorld());
                 }
                 sender.sendMessage(miniMessage.deserialize(message));
+                return true;
             }
         }
 

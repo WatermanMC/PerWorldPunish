@@ -21,11 +21,13 @@ public class PerWorldPunishCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
+            return true;
         }
 
         if (!sender.hasPermission("perworldpunish.admin")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
-        }
+            return true;
+       }
 
         switch (args[0].toLowerCase()) {
             case "reload" -> {
