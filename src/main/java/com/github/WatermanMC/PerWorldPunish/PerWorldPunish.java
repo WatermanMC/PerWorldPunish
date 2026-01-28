@@ -22,14 +22,14 @@ public class PerWorldPunish extends JavaPlugin {
         loadData();
         registerCommands();
         registerEvents();
-        getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + "enabled!");
+        getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + " enabled!");
     }
 
     @Override
     public void onDisable() {
         PluginMeta  pluginMeta = getPluginMeta();
         saveData();
-        getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + "disabled!");
+        getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + " disabled!");
     }
 
     private void registerCommands() {

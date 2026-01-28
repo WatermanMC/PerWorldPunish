@@ -38,6 +38,7 @@ public class PerWorldPunishCommand implements CommandExecutor {
                 } else {
                     sender.sendMessage(miniMessage.deserialize("<red>Plugin reload failed. Please check your console for errors."));
                 }
+                return true;
             }
             case "info" -> {
                 PluginMeta meta = plugin.getPluginMeta();
@@ -45,9 +46,12 @@ public class PerWorldPunishCommand implements CommandExecutor {
                 sender.sendMessage(miniMessage.deserialize("<gray>Allows per-world punishments such as ban, kick and tempban!"));
                 sender.sendMessage(miniMessage.deserialize("<gold>Authors<gray>: <reset>" + meta.getAuthors()));
                 sender.sendMessage(miniMessage.deserialize("<green>Commands<gray>: <white>/perworldpunish /worldban /worldtempban /worldunban /worldkick /worldbanlist"));
+                return true;
             }
-            default -> sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
+            default -> {
+                sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
+                return true;
+            }
         }
-        return true;
     }
 }
