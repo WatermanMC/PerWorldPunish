@@ -1,5 +1,6 @@
 package com.github.WatermanMC.PerWorldPunish;
 
+import com.github.WatermanMC.PerWorldPunish.commands.tabcompleter.*;
 import com.github.WatermanMC.PerWorldPunish.commands.*;
 import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,7 @@ public class PerWorldPunish extends JavaPlugin {
         this.bans = new HashMap<>();
         loadData();
         registerCommands();
+        registerCommandCompleter();
         registerEvents();
         getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + " enabled!");
     }
@@ -39,6 +41,15 @@ public class PerWorldPunish extends JavaPlugin {
         new WorldKickCommand(this);
         new WorldTempBanCommand(this);
         new PerWorldPunishCommand(this);
+    }
+
+    private void registerCommandCompleter() {
+        WorldBanCommandCompleter worldBanCommandCompleter = new WorldBanCommandCompleter(this);
+
+        getCommand("worldban").setTabCompleter(worldBanCommandCompleter);
+        getCommand("worldkick").setTabCompleter(worldBanCommandCompleter);
+        getCommand("worldunban").setTabCompleter(worldBanCommandCompleter);
+        getCommand("worldtempban").setTabCompleter(worldBanCommandCompleter);
     }
 
     private void registerEvents() {
