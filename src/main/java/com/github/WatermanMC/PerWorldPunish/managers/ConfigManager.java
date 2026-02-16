@@ -4,6 +4,9 @@ import com.github.WatermanMC.PerWorldPunish.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -44,8 +47,6 @@ public class ConfigManager {
         String currentFile = "config.yml";
 
         try {
-            currentFile = "config.yml";
-            config = new YamlConfiguration();
             config.load(configFile);
 
             currentFile = "messages.yml";
@@ -76,7 +77,7 @@ public class ConfigManager {
         }
     }
 
-    private String extractLocation(String msg) {
+    private String extractLocation(@Nullable String msg) {
         if (msg == null) return "unknown location";
         java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("line \\d+, column \\d+").matcher(msg);
         if (matcher.find()) {
@@ -86,14 +87,18 @@ public class ConfigManager {
     }
 
     public String getDefaultReason() {
-        return config.getString("default-reason", "<red>No reason provided.");
+        return getConfig().getString("default-reason", "<red>No reason provided.");
     }
 
     public String getFallbackWorld() {
-        return config.getString("fallback-world", "world");
+        return getConfig().getString("fallback-world", "world");
     }
 
-    public String getMessage(String path) {
+    public String getMessage(@NotNull String path) {
         return messages.getString(path, "<red>Message not found: " + path);
+    }
+
+    public FileConfiguration getConfig() {
+        return this.config;
     }
 }

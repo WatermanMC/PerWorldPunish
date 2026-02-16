@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.World;
 import java.util.UUID;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldUnbanCommand implements CommandExecutor {
     private PerWorldPunish plugin;
@@ -20,7 +21,10 @@ public class WorldUnbanCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command command,
+                             @NotNull String label,
+                             @NotNull String[] args) {
         if (!sender.hasPermission("perworldpunish.worldunban")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
             return true;

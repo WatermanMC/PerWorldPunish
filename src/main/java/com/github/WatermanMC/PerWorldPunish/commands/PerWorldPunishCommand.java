@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import io.papermc.paper.plugin.configuration.PluginMeta;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.NotNull;
 
 public class PerWorldPunishCommand implements CommandExecutor {
     private PerWorldPunish plugin;
@@ -18,7 +19,10 @@ public class PerWorldPunishCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command command,
+                             @NotNull String label,
+                             @NotNull String[] args) {
         if (args.length < 1) {
             sender.sendMessage(miniMessage.deserialize("<red>Usage: /perworldpunish <info|reload>"));
             return true;

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.World;
 import java.util.UUID;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldTempBanCommand implements CommandExecutor {
     private PerWorldPunish plugin;
@@ -21,7 +22,10 @@ public class WorldTempBanCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command command,
+                             @NotNull String label,
+                             @NotNull String[] args) {
         if (!sender.hasPermission("perworldpunish.worldtempban")) {
             sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
             return true;

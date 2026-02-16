@@ -5,6 +5,8 @@ import com.github.WatermanMC.PerWorldPunish.commands.*;
 import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import io.papermc.paper.plugin.configuration.PluginMeta;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class PerWorldPunish extends JavaPlugin {
@@ -77,11 +79,11 @@ public class PerWorldPunish extends JavaPlugin {
         return bans;
     }
 
-    public void addBan(UUID playerId, WorldBan ban) {
+    public void addBan(@NotNull UUID playerId, @NotNull WorldBan ban) {
         bans.computeIfAbsent(playerId, k -> new HashSet<>()).add(ban);
     }
 
-    public void removeBan(UUID playerId, String worldName) {
+    public void removeBan(@NotNull UUID playerId, @NotNull String worldName) {
         if (bans.containsKey(playerId)) {
             bans.get(playerId).removeIf(ban -> ban.getWorld().equalsIgnoreCase(worldName));
             if (bans.get(playerId).isEmpty()) {
@@ -90,7 +92,7 @@ public class PerWorldPunish extends JavaPlugin {
         }
     }
 
-    public boolean isBanned(UUID playerId, String worldName) {
+    public boolean isBanned(@NotNull UUID playerId, @NotNull String worldName) {
         if (!bans.containsKey(playerId)) return false;
 
         for (WorldBan ban : bans.get(playerId)) {
