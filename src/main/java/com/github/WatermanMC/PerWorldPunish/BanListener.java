@@ -43,7 +43,9 @@ public class BanListener implements Listener {
     }
 
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent event, String worldName, Player player) {
+    public void onTeleport(PlayerTeleportEvent event) {
+        String worldName = event.getPlayer().getWorld().getName();
+        Player player = event.getPlayer();
         if (plugin.isBanned(event.getPlayer().getUniqueId(), event.getTo().getWorld().getName())) {
             WorldBan ban = getBanForWorld(player.getUniqueId(), worldName);
             if (ban != null) {
