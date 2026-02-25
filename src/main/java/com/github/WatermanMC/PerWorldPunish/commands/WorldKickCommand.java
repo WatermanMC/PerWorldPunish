@@ -1,6 +1,7 @@
 package com.github.WatermanMC.PerWorldPunish.commands;
 
 import com.github.WatermanMC.PerWorldPunish.*;
+import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,10 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class WorldKickCommand implements CommandExecutor {
     private PerWorldPunish plugin;
+    private ConfigManager configManager;
     private MiniMessage miniMessage;
 
-    public WorldKickCommand(PerWorldPunish plugin) {
+    public WorldKickCommand(PerWorldPunish plugin, ConfigManager configManager) {
         this.plugin = plugin;
+        this.configManager = configManager;
         this.miniMessage = MiniMessage.miniMessage();
         plugin.getCommand("worldkick").setExecutor(this);
     }
@@ -26,7 +29,7 @@ public class WorldKickCommand implements CommandExecutor {
                              @NotNull String label,
                              @NotNull String[] args) {
         if (!sender.hasPermission("perworldpunish.worldkick")) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("nopermission")));
             return true;
         }
 
@@ -40,19 +43,19 @@ public class WorldKickCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(playerName);
         if (target == null) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidPlayer")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("invalidPlayer")));
             return true;
        }
 
         if (target.hasPermission("perworldpunish.admin")) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("playerPunishImmune")
                     .replace("{player}", playerName)));
             return true;
         }
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("invalidWorld")));
             return true;
         }
 
@@ -63,24 +66,24 @@ public class WorldKickCommand implements CommandExecutor {
 
         String reason = reasonBuilder.toString().trim();
         if (reason.isEmpty()) {
-            reason = plugin.getConfigManager().getDefaultReason();
+            reason = configManager.getDefaultReason();
         }
 
         if (target.getWorld().getName().equalsIgnoreCase(worldName)) {
-            target.teleport(Bukkit.getWorld(plugin.getConfigManager().getFallbackWorld()).getSpawnLocation());
+            target.teleport(Bukkit.getWorld(configManager.getFallbackWorld()).getSpawnLocation());
 
-            String playerMsg = plugin.getConfigManager().getMessage("playerKicked")
+            String playerMsg = configManager.getMessage("playerKicked")
                     .replace("{world}", worldName)
                     .replace("{reason}", reason);
             target.sendMessage(miniMessage.deserialize(playerMsg));
 
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("kickSuccess")
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("kickSuccess")
                     .replace("{player}", playerName)
                     .replace("{world}", worldName)
                     .replace("{reason}", reason)));
             return true;
         } else {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerNotInWorld")
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("playerNotInWorld")
                     .replace("{world}", worldName)));
         }
 

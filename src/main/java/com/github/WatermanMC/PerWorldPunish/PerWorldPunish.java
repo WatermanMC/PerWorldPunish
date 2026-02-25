@@ -4,45 +4,44 @@ import com.github.WatermanMC.PerWorldPunish.commands.tabcompleter.*;
 import com.github.WatermanMC.PerWorldPunish.commands.*;
 import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import io.papermc.paper.plugin.configuration.PluginMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class PerWorldPunish extends JavaPlugin {
-    private static PerWorldPunish instance;
     private ConfigManager configManager;
     private DataManager dataManager;
     private Map<UUID, Set<WorldBan>> bans;
 
     @Override
     public void onEnable() {
-        PluginMeta  pluginMeta = getPluginMeta();
-        instance = this;
-        this.configManager = new ConfigManager();
-        this.dataManager = new DataManager();
-        this.bans = new HashMap<>();
+        loadManagers();
         loadData();
         registerCommands();
         registerCommandCompleter();
         registerEvents();
-        getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + " enabled!");
+        getLogger().info("PerWorldPunish v" + getPluginMeta().getVersion() + " enabled!");
     }
 
     @Override
     public void onDisable() {
-        PluginMeta  pluginMeta = getPluginMeta();
         saveData();
-        getLogger().info("PerWorldPunish v" + pluginMeta.getVersion() + " disabled!");
+        getLogger().info("PerWorldPunish v" + getPluginMeta().getVersion() + " disabled!");
     }
 
     private void registerCommands() {
-        new WorldBanCommand(this);
-        new WorldUnbanCommand(this);
-        new WorldBanListCommand(this);
-        new WorldKickCommand(this);
-        new WorldTempBanCommand(this);
-        new PerWorldPunishCommand(this);
+        new WorldBanCommand(this, configManager);
+        new WorldUnbanCommand(this, configManager);
+        new WorldBanListCommand(this, configManager);
+        new WorldKickCommand(this, configManager);
+        new WorldTempBanCommand(this, configManager);
+        new PerWorldPunishCommand(this, configManager);
+    }
+
+    private void loadManagers() {
+        this.configManager = new ConfigManager(this);
+        this.dataManager = new DataManager(this);
+        this.bans = new HashMap<>();
     }
 
     private void registerCommandCompleter() {
@@ -55,7 +54,7 @@ public class PerWorldPunish extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new BanListener(this), this);
+        getServer().getPluginManager().registerEvents(new BanListener(this, configManager), this);
     }
 
     private void loadData() {
@@ -66,21 +65,12 @@ public class PerWorldPunish extends JavaPlugin {
         dataManager.saveBans(bans);
     }
 
-    public static PerWorldPunish getInstance() {
-        return instance;
-    }
-
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-
     public Map<UUID, Set<WorldBan>> getBans() {
         return bans;
     }
 
     public void addBan(@NotNull UUID playerId, @NotNull WorldBan ban) {
-        bans.computeIfAbsent(playerId, k -> new HashSet<>()).add(ban);
+        bans.computeIfAbsent(playerId, uuid -> new HashSet<>()).add(ban);
     }
 
     public void removeBan(@NotNull UUID playerId, @NotNull String worldName) {

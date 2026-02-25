@@ -1,6 +1,5 @@
 package com.github.WatermanMC.PerWorldPunish;
 
-import com.github.WatermanMC.PerWorldPunish.commands.*;
 import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,51 +18,47 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class BanListener implements Listener {
     private PerWorldPunish plugin;
+    private ConfigManager configManager;
     private MiniMessage miniMessage;
 
-    public BanListener(PerWorldPunish plugin) {
+    public BanListener(PerWorldPunish plugin, ConfigManager configManager) {
         this.plugin = plugin;
+        this.configManager = configManager;
         this.miniMessage = MiniMessage.miniMessage();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        String worldName = player.getWorld().getName();
-
-        checkAndHandleBan(player, worldName);
+        banHandler(event.getPlayer(), event.getPlayer().getWorld().getName());
     }
 
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
-        Player player = event.getPlayer();
-        String worldName = player.getWorld().getName();
-
-        checkAndHandleBan(player, worldName);
+        banHandler(event.getPlayer(), event.getPlayer().getWorld().getName());
     }
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         String worldName = event.getPlayer().getWorld().getName();
         Player player = event.getPlayer();
-        if (plugin.isBanned(event.getPlayer().getUniqueId(), event.getTo().getWorld().getName())) {
-            WorldBan ban = getBanForWorld(player.getUniqueId(), worldName);
+        if (plugin.isBanned(player.getUniqueId(), event.getTo().getWorld().getName())) {
+            WorldBan ban = getWorldBan(player.getUniqueId(), worldName);
             if (ban != null) {
                 String reason = ban.getReason();
                 if (reason.isEmpty()) {
-                    reason = plugin.getConfigManager().getDefaultReason();
+                    reason = configManager.getDefaultReason();
                 }
 
                 Component message;
                 if (ban.isTemporary()) {
                     long remainingMinutes = ban.getRemainingTime() / (60 * 1000);
-                    String msg = plugin.getConfigManager().getMessage("playerTempBanned")
+                    String msg = configManager.getMessage("playerTempBanned")
                             .replace("{world}", worldName)
                             .replace("{reason}", reason)
                             .replace("{time}", String.valueOf(remainingMinutes));
                     message = miniMessage.deserialize(msg);
                 } else {
-                    String msg = plugin.getConfigManager().getMessage("playerBanned")
+                    String msg = configManager.getMessage("playerBanned")
                             .replace("{world}", worldName)
                             .replace("{reason}", reason);
                     message = miniMessage.deserialize(msg);
@@ -74,9 +69,9 @@ public class BanListener implements Listener {
         }
     }
 
-    private void checkAndHandleBan(Player player, String worldName) {
+    private void banHandler(Player player, String worldName) {
         if (plugin.isBanned(player.getUniqueId(), worldName)) {
-            String fallbackWorld = plugin.getConfigManager().getFallbackWorld();
+            String fallbackWorld = configManager.getFallbackWorld();
 
             World fallback = Bukkit.getWorld(fallbackWorld);
             if (fallback == null) {
@@ -86,23 +81,23 @@ public class BanListener implements Listener {
             Location spawn = fallback.getSpawnLocation();
             player.teleport(spawn);
 
-            WorldBan ban = getBanForWorld(player.getUniqueId(), worldName);
+            WorldBan ban = getWorldBan(player.getUniqueId(), worldName);
             if (ban != null) {
                 String reason = ban.getReason();
                 if (reason.isEmpty()) {
-                    reason = plugin.getConfigManager().getDefaultReason();
+                    reason = configManager.getDefaultReason();
                 }
 
                 Component message;
                 if (ban.isTemporary()) {
                     long remainingMinutes = ban.getRemainingTime() / (60 * 1000);
-                    String msg = plugin.getConfigManager().getMessage("playerTempBanned")
+                    String msg = configManager.getMessage("playerTempBanned")
                             .replace("{world}", worldName)
                             .replace("{reason}", reason)
                             .replace("{time}", String.valueOf(remainingMinutes));
                     message = miniMessage.deserialize(msg);
                 } else {
-                    String msg = plugin.getConfigManager().getMessage("playerBanned")
+                    String msg = configManager.getMessage("playerBanned")
                             .replace("{world}", worldName)
                             .replace("{reason}", reason);
                     message = miniMessage.deserialize(msg);
@@ -112,7 +107,7 @@ public class BanListener implements Listener {
         }
     }
 
-    private WorldBan getBanForWorld(UUID playerId, String worldName) {
+    private WorldBan getWorldBan(UUID playerId, String worldName) {
         Set<WorldBan> playerBans = plugin.getBans().get(playerId);
         if (playerBans == null) return null;
 

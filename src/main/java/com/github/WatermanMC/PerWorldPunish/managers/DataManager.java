@@ -12,8 +12,8 @@ public class DataManager {
     private File dataFile;
     private YamlConfiguration data;
 
-    public DataManager() {
-        this.plugin = PerWorldPunish.getInstance();
+    public DataManager(PerWorldPunish plugin) {
+        this.plugin = plugin;
         this.dataFile = new File(plugin.getDataFolder(), "data.yml");
         createFile();
     }

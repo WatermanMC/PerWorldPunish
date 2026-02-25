@@ -19,8 +19,8 @@ public class ConfigManager {
     private File configFile;
     private File messagesFile;
 
-    public ConfigManager() {
-        this.plugin = PerWorldPunish.getInstance();
+    public ConfigManager(PerWorldPunish plugin) {
+        this.plugin = plugin;
         createFiles();
         reloadConfigs();
     }

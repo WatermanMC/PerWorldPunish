@@ -1,6 +1,7 @@
 package com.github.WatermanMC.PerWorldPunish.commands;
 
 import com.github.WatermanMC.PerWorldPunish.*;
+import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,10 +14,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class WorldBanCommand implements CommandExecutor {
     private PerWorldPunish plugin;
+    private ConfigManager configManager;
     private MiniMessage miniMessage;
 
-    public WorldBanCommand(PerWorldPunish plugin) {
+    public WorldBanCommand(PerWorldPunish plugin, ConfigManager configManager) {
         this.plugin = plugin;
+        this.configManager = configManager;
         this.miniMessage = MiniMessage.miniMessage();
         plugin.getCommand("worldban").setExecutor(this);
     }
@@ -27,7 +30,7 @@ public class WorldBanCommand implements CommandExecutor {
                              @NotNull String label,
                              @NotNull String[] args) {
         if (!sender.hasPermission("perworldpunish.worldban")) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("nopermission")));
             return true;
         }
 
@@ -46,7 +49,7 @@ public class WorldBanCommand implements CommandExecutor {
 
         String reason = reasonBuilder.toString().trim();
         if (reason.isEmpty()) {
-            reason = plugin.getConfigManager().getDefaultReason();
+            reason = configManager.getDefaultReason();
         }
 
         Player target = Bukkit.getPlayer(playerName);
@@ -54,7 +57,7 @@ public class WorldBanCommand implements CommandExecutor {
 
         if (target != null) {
             if (target.hasPermission("perworldpunish.admin")) {
-                sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
+                sender.sendMessage(miniMessage.deserialize(configManager.getMessage("playerPunishImmune")
                         .replace("{player}", playerName)));
                 return true;
             }
@@ -65,20 +68,20 @@ public class WorldBanCommand implements CommandExecutor {
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("invalidWorld")));
             return true;
         }
 
         plugin.addBan(playerId, new WorldBan(worldName, reason));
 
-        sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("banSuccess")
+        sender.sendMessage(miniMessage.deserialize(configManager.getMessage("banSuccess")
                 .replace("{player}", playerName)
                 .replace("{world}", worldName)
                 .replace("{reason}", reason)));
 
         if (target != null && target.isOnline() && target.getWorld().getName().equalsIgnoreCase(worldName)) {
-            target.teleport(Bukkit.getWorld(plugin.getConfigManager().getFallbackWorld()).getSpawnLocation());
-            String msg = plugin.getConfigManager().getMessage("playerBanned")
+            target.teleport(Bukkit.getWorld(configManager.getFallbackWorld()).getSpawnLocation());
+            String msg = configManager.getMessage("playerBanned")
                     .replace("{world}", worldName)
                     .replace("{reason}", reason);
             target.sendMessage(miniMessage.deserialize(msg));

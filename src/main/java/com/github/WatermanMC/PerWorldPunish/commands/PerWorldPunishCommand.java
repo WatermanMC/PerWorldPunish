@@ -1,6 +1,7 @@
 package com.github.WatermanMC.PerWorldPunish.commands;
 
 import com.github.WatermanMC.PerWorldPunish.*;
+import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,10 +11,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class PerWorldPunishCommand implements CommandExecutor {
     private PerWorldPunish plugin;
+    private ConfigManager configManager;
     private MiniMessage miniMessage;
 
-    public PerWorldPunishCommand(PerWorldPunish plugin) {
+    public PerWorldPunishCommand(PerWorldPunish plugin, ConfigManager configManager) {
         this.plugin = plugin;
+        this.configManager = configManager;
         this.miniMessage = MiniMessage.miniMessage();
         plugin.getCommand("perworldpunish").setExecutor(this);
     }
@@ -29,16 +32,16 @@ public class PerWorldPunishCommand implements CommandExecutor {
         }
 
         if (!sender.hasPermission("perworldpunish.admin")) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("nopermission")));
             return true;
        }
 
         switch (args[0].toLowerCase()) {
             case "reload" -> {
-                boolean success = plugin.getConfigManager().reloadConfigs();
+                boolean success = configManager.reloadConfigs();
 
                 if (success) {
-                    sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("pluginReloaded")));
+                    sender.sendMessage(miniMessage.deserialize(configManager.getMessage("pluginReloaded")));
                 } else {
                     sender.sendMessage(miniMessage.deserialize("<red>Plugin reload failed. Please check your console for errors."));
                 }

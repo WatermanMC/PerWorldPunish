@@ -1,6 +1,7 @@
 package com.github.WatermanMC.PerWorldPunish.commands;
 
 import com.github.WatermanMC.PerWorldPunish.*;
+import com.github.WatermanMC.PerWorldPunish.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,10 +14,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class WorldTempBanCommand implements CommandExecutor {
     private PerWorldPunish plugin;
+    private ConfigManager configManager;
     private MiniMessage miniMessage;
 
-    public WorldTempBanCommand(PerWorldPunish plugin) {
+    public WorldTempBanCommand(PerWorldPunish plugin, ConfigManager configManager) {
         this.plugin = plugin;
+        this.configManager = configManager;
         this.miniMessage = MiniMessage.miniMessage();
         plugin.getCommand("worldtempban").setExecutor(this);
     }
@@ -27,7 +30,7 @@ public class WorldTempBanCommand implements CommandExecutor {
                              @NotNull String label,
                              @NotNull String[] args) {
         if (!sender.hasPermission("perworldpunish.worldtempban")) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("nopermission")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("nopermission")));
             return true;
         }
 
@@ -42,7 +45,7 @@ public class WorldTempBanCommand implements CommandExecutor {
         try {
             int minutes = Integer.parseInt(args[2]);
             if (minutes <= 0) {
-                sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("timeNotPositive")));
+                sender.sendMessage(miniMessage.deserialize(configManager.getMessage("timeNotPositive")));
             }
 
             StringBuilder reasonBuilder = new StringBuilder();
@@ -52,7 +55,7 @@ public class WorldTempBanCommand implements CommandExecutor {
 
             String reason = reasonBuilder.toString().trim();
             if (reason.isEmpty()) {
-                reason = plugin.getConfigManager().getDefaultReason();
+                reason = configManager.getDefaultReason();
             }
 
             Player target = Bukkit.getPlayer(playerName);
@@ -60,7 +63,7 @@ public class WorldTempBanCommand implements CommandExecutor {
 
             if (target != null) {
                 if (target.hasPermission("perworldpunish.admin")) {
-                    sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("playerPunishImmune")
+                    sender.sendMessage(miniMessage.deserialize(configManager.getMessage("playerPunishImmune")
                             .replace("{player}", playerName)));
                 }
                 playerId = target.getUniqueId();
@@ -70,21 +73,21 @@ public class WorldTempBanCommand implements CommandExecutor {
 
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
-                sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidWorld")));
+                sender.sendMessage(miniMessage.deserialize(configManager.getMessage("invalidWorld")));
             }
 
             long expiryTime = System.currentTimeMillis() + (minutes * 60 * 1000L);
             plugin.addBan(playerId, new WorldBan(worldName, reason, expiryTime, true));
 
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("tempBanSuccess")
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("tempBanSuccess")
                     .replace("{player}", playerName)
                     .replace("{world}", worldName)
                     .replace("{time}", String.valueOf(minutes))
                     .replace("{reason}", reason)));
 
             if (target != null && target.isOnline() && target.getWorld().getName().equalsIgnoreCase(worldName)) {
-                target.teleport(Bukkit.getWorld(plugin.getConfigManager().getFallbackWorld()).getSpawnLocation());
-                String msg = plugin.getConfigManager().getMessage("playerTempBanned")
+                target.teleport(Bukkit.getWorld(configManager.getFallbackWorld()).getSpawnLocation());
+                String msg = configManager.getMessage("playerTempBanned")
                         .replace("{world}", worldName)
                         .replace("{reason}", reason)
                         .replace("{time}", String.valueOf(minutes));
@@ -93,7 +96,7 @@ public class WorldTempBanCommand implements CommandExecutor {
             return true;
 
         } catch (NumberFormatException e) {
-            sender.sendMessage(miniMessage.deserialize(plugin.getConfigManager().getMessage("invalidTimeFormat")));
+            sender.sendMessage(miniMessage.deserialize(configManager.getMessage("invalidTimeFormat")));
         }
 
         return true;
