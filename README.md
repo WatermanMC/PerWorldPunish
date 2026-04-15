@@ -96,10 +96,4 @@ playerNotInWorld: "<gray>That player is not in <yellow>{world}<gray>."
 
 * **GitHub Repository** (Source Code & Full Documentation): [https://github.com/WatermanMC/PerWorldPunish](https://github.com/WatermanMC/PerWorldPunish)
 * **Documentation:** [https://github.com/WatermanMC/PerWorldPunish/wiki](https://github.com/WatermanMC/PerWorldPunish/wiki)
-* **Discord Support:** [https://discord.gg/Scgqfm5EU4](https://discord.gg/Scgqfm5EU4)
-
----
-
-This plugin is also owned by **VOXELWARE STUDIOS**.
-
----
+* **Discord Support:** [https://discord.gg/Scgqfm5EU4](https://discord.gg/Scgqfm5EU4
